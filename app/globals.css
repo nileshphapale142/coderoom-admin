@@ -1,0 +1,130 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    font-family: 'Roboto', Helvetica, Arial, sans-serif;
+    font-size: 0.8125rem;
+    font-weight: 400;
+    line-height: 1.25rem;
+    height: 100%;
+    background-color: #f0f4f9;
+}
+
+div {
+    display: block;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-size: inherit;
+    font-weight: inherit;
+    margin: 0;
+}
+
+a {
+    text-decoration: none;
+}
+
+p {
+    margin: 0;
+}
+
+ul,
+ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+[type='text']:focus,
+[type='email']:focus,
+[type='url']:focus,
+[type='password']:focus,
+[type='number']:focus,
+[type='date']:focus,
+[type='datetime-local']:focus,
+[type='month']:focus,
+[type='search']:focus,
+[type='tel']:focus,
+[type='time']:focus,
+[type='week']:focus,
+[multiple]:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+    outline-offset: 0;
+    border: none;
+    box-shadow: none;
+}
+
+input,
+textarea,
+keygen,
+select,
+button {
+    font: inherit;
+}
+
+form {
+    margin: 0;
+    padding: 0;
+}
+
+textarea {
+    appearance: none;
+    font-family: inherit;
+    font-size: inherit;
+    resize: none;
+    outline: none;
+    overflow-y: auto;
+}
+
+@layer components {
+    .text-style {
+        @apply text-sm font-medium leading-5 tracking-sm;
+    }
+
+    .text-style-1 {
+        font-family: Roboto sans-serif;
+        font-size: 0.75rem;
+        @apply font-normal leading-4 tracking-wide;
+    }
+
+    .flex-row-container {
+        @apply flex flex-row items-center;
+    }
+
+    .text-wrapping {
+        @apply block overflow-hidden text-ellipsis whitespace-nowrap;
+    }
+
+    .text-heading {
+        @apply text-xl font-bold leading-5 tracking-sm;
+    }
+
+    .table-box {
+        border-bottom: 0.0625rem solid;
+        border-right: 0.0625rem solid;
+        @apply box-border h-full border-b-slate-300 border-r-slate-300 bg-white;
+    }
+}
+
+.underline-custom {
+    text-decoration: underline;
+    text-decoration-color: rgb(127, 125, 129);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+}
+
+.google-bw-bg {
+    background-color: #f0f4f9;
+}
