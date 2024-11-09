@@ -4,7 +4,7 @@ import { backendApi } from "@/api";
 import { cookies } from "next/headers";
 
 export async function SignInAction(data: {
-  email: string;
+  userName: string;
   password: string;
 }) {
   try {

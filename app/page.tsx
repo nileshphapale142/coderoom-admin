@@ -1,26 +1,39 @@
 import React from "react";
+import { fetchUnVerifiedTeachers } from "./action";
+import { redirect } from "next/navigation";
+
+
+interface Teacher {
+  id: number;
+  name: string;
+  email: string;
+}
+
 
 const UserRow = ({ name, email }: { name: string; email: string }) => {
   return (
     <div
-      className="font-base text-xl flex w-2/3 flex-wrap flex-row justify-between
-    p-4 border rounded-4 border-gray my-1  cursor-default hover:bg-google-bw transition-all"
+      className="font-base text-xl flex w-2/3 flex-wrap flex-row justify-between p-4 border rounded-4 border-gray my-1 cursor-default hover:bg-google-bw transition-all"
     >
-      <div className="py-1 flex justify-center items-center text-center">
+      <div className="py-1 flex justify-start items-center text-center" style={{ flexBasis: "30%" }}>
         {name}
       </div>
-      <div className="py-1 flex justify-center items-center text-center">
+
+      <div className="py-1 flex justify-start items-center text-center" style={{ flexBasis: "40%" }}>
         {email}
       </div>
-      <div className="">
-        <button className="w-30 h-10 rounded-4 px-2 py-1 bg-green-600">
+
+      <div className="pr-1" style={{ flexBasis: "15%" }}>
+        <button className="w-full h-10 rounded-4 px-2 py-1 bg-green-600">
           <span className="flex justify-center items-center text-center">
             Approve
           </span>
         </button>
       </div>
-      <div className="">
-        <button className="w-30 h-10 rounded-4 px-2 py-1 bg-red-600">
+
+      {/* Decline button */}
+      <div className="pl-1" style={{ flexBasis: "15%" }}>
+        <button className="w-full h-10 rounded-4 px-2 py-1 bg-red-600">
           <span className="flex justify-center items-center text-center">
             Decline
           </span>
@@ -30,13 +43,14 @@ const UserRow = ({ name, email }: { name: string; email: string }) => {
   );
 };
 
-const Dashboard = () => {
-  const users = [
-    { name: "Nilesh Phapale", email: "202111063@diu.iiitvadodara.ac.in" },
-    { name: "Nilesh Phapale", email: "202111063@diu.iiitvadodara.ac.in" },
-    { name: "Nilesh Phapale", email: "202111063@diu.iiitvadodara.ac.in" },
-    
-  ];
+
+const Dashboard = async () => {
+  
+  const { data, status } = await fetchUnVerifiedTeachers();
+
+  if (!status || status == 401) redirect('/auth/signin');
+  
+  const unVerifiedTeachers:Teacher[] = data?.unverified_teachers || []
 
   return (
     <div className="bg-google-bw  visible absolute flex h-auto min-h-full w-full opacity-100 contain-style">
@@ -53,8 +67,8 @@ const Dashboard = () => {
             </div>
             <div className="p-10 h-full w-full">
               <div className="flex h-full w-full flex-col items-center">
-                {users.map((user, idx) => (
-                  <UserRow key={idx} {...user} />
+                {unVerifiedTeachers.map((teacher, idx) => (
+                  <UserRow key={idx} {...teacher} />
                 ))}
               </div>
             </div>

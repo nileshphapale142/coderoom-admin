@@ -4,12 +4,12 @@ import { atom } from 'recoil';
 
 
 export const userSignInInfo = atom<{
-  email: string;
+  userName: string;
   password: string;
 }>({
   key: "userSignInInfo",
   default: {
-    email: "",
+    userName: "",
     password: "",
   },
 });
