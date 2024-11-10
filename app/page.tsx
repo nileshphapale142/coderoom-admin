@@ -1,6 +1,7 @@
-import React from "react";
-import { fetchUnVerifiedTeachers } from "./action";
 import { redirect } from "next/navigation";
+import { UserRow } from "@/components/User";
+import { backendApi } from "@/api"
+import { cookies } from "next/headers"
 
 
 interface Teacher {
@@ -10,39 +11,36 @@ interface Teacher {
 }
 
 
-const UserRow = ({ name, email }: { name: string; email: string }) => {
-  return (
-    <div
-      className="font-base text-xl flex w-2/3 flex-wrap flex-row justify-between p-4 border rounded-4 border-gray my-1 cursor-default hover:bg-google-bw transition-all"
-    >
-      <div className="py-1 flex justify-start items-center text-center" style={{ flexBasis: "30%" }}>
-        {name}
-      </div>
+const fetchUnVerifiedTeachers = async () => {
+  try {
+    const cookieStore = cookies()
+    const access_token = cookieStore.get('access_token');
+    
+    if (!access_token) {
+      return {
+        data: null, status: null
+      }
+    }
+    
+    const res = await backendApi.get('/admin/getUnverifiedTeachers', {
+      headers: {
+        Authorization: `Bearer ${access_token?.value}`
+      }
+    });
+    
+    
+   const data = res.data
 
-      <div className="py-1 flex justify-start items-center text-center" style={{ flexBasis: "40%" }}>
-        {email}
-      </div>
-
-      <div className="pr-1" style={{ flexBasis: "15%" }}>
-        <button className="w-full h-10 rounded-4 px-2 py-1 bg-green-600">
-          <span className="flex justify-center items-center text-center">
-            Approve
-          </span>
-        </button>
-      </div>
-
-      {/* Decline button */}
-      <div className="pl-1" style={{ flexBasis: "15%" }}>
-        <button className="w-full h-10 rounded-4 px-2 py-1 bg-red-600">
-          <span className="flex justify-center items-center text-center">
-            Decline
-          </span>
-        </button>
-      </div>
-    </div>
-  );
-};
-
+    return {status: 200, data}
+    
+  } catch(err:any) {
+    console.log(err?.message)
+    return {
+      status: err?.response?.status || -1,
+      data: null      
+    }
+  }
+}
 
 const Dashboard = async () => {
   
@@ -70,6 +68,9 @@ const Dashboard = async () => {
                 {unVerifiedTeachers.map((teacher, idx) => (
                   <UserRow key={idx} {...teacher} />
                 ))}
+                  {unVerifiedTeachers.length === 0 && 
+                  <h1 className="text-xl font-normal">No pending requests!!!</h1>
+                }
               </div>
             </div>
           </div>
@@ -79,4 +80,4 @@ const Dashboard = async () => {
   );
 };
 
-export default Dashboard;
+export default Dashboard

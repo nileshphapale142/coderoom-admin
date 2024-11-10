@@ -13,9 +13,3 @@ export const userSignInInfo = atom<{
     password: "",
   },
 });
-
-export const signUpPageNo = atom({
-  key: "signUpPageNo",
-  default: 0,
-});
-

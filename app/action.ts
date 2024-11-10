@@ -2,35 +2,55 @@
 
 import { backendApi } from "@/api"
 import { cookies } from "next/headers"
+import { redirect } from "next/navigation"
 
 
-export const fetchUnVerifiedTeachers = async () => {
+export const approveTeacher = async (teacherId: number) => {
   try {
-    const cookieStore = cookies()
-    const access_token = cookieStore.get('access_token');
+    const cookie = cookies()
+    const access_token = cookie.get('access_token')
     
     if (!access_token) {
-      return {
-        data: null, status: null
-      }
-    }
+      return {status: 401}
+    } 
     
-    const res = await backendApi.get('/admin/getUnverifiedTeachers', {
+    const response = await backendApi.patch(`/admin/approve/teacher/${teacherId}`,{}, {
       headers: {
         Authorization: `Bearer ${access_token?.value}`
       }
     });
     
+    const data = response.data
     
-   const data = res.data
-
-    return {status: 200, data}
-    
-  } catch(err:any) {
+    return {status: 200}
+    } catch(err:any) {
     console.log(err?.message)
-    return {
-      status: err?.response?.status || -1,
-      data: null      
-    }
+    
+    return {status: err?.response?.status}
+  }
+}
+
+export const declineTeacher = async (teacherId: number) => {
+  try {
+    const cookie = cookies()
+    const access_token = cookie.get('access_token')
+    
+    if (!access_token) {
+      return {status: 401}
+    } 
+    
+    const response = await backendApi.delete(`/admin/decline/teacher/${teacherId}`, {
+      headers: {
+        Authorization: `Bearer ${access_token?.value}`
+      }
+    });
+    
+    const data = response.data
+    
+    return {status: 200}
+    } catch(err:any) {
+    console.log(err?.message)
+    
+    return {status: err?.response?.status}
   }
 }
