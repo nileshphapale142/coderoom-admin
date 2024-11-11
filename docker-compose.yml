@@ -1,0 +1,17 @@
+services:
+  prod-server:
+    image: coderoom-admin:1
+    container_name: admin-server
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    env_file:
+      - .env.production
+    networks:
+      - coderoom
+
+networks:
+  coderoom:
+    external: true
