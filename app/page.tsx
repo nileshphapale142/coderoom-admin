@@ -1,42 +1,54 @@
-import React from "react";
+import { redirect } from "next/navigation";
+import { UserRow } from "@/components/User";
+import { backendApi } from "@/api"
+import { cookies } from "next/headers"
 
-const UserRow = ({ name, email }: { name: string; email: string }) => {
-  return (
-    <div
-      className="font-base text-xl flex w-2/3 flex-wrap flex-row justify-between
-    p-4 border rounded-4 border-gray my-1  cursor-default hover:bg-google-bw transition-all"
-    >
-      <div className="py-1 flex justify-center items-center text-center">
-        {name}
-      </div>
-      <div className="py-1 flex justify-center items-center text-center">
-        {email}
-      </div>
-      <div className="">
-        <button className="w-30 h-10 rounded-4 px-2 py-1 bg-green-600">
-          <span className="flex justify-center items-center text-center">
-            Approve
-          </span>
-        </button>
-      </div>
-      <div className="">
-        <button className="w-30 h-10 rounded-4 px-2 py-1 bg-red-600">
-          <span className="flex justify-center items-center text-center">
-            Decline
-          </span>
-        </button>
-      </div>
-    </div>
-  );
-};
 
-const Dashboard = () => {
-  const users = [
-    { name: "Nilesh Phapale", email: "202111063@diu.iiitvadodara.ac.in" },
-    { name: "Nilesh Phapale", email: "202111063@diu.iiitvadodara.ac.in" },
-    { name: "Nilesh Phapale", email: "202111063@diu.iiitvadodara.ac.in" },
+interface Teacher {
+  id: number;
+  name: string;
+  email: string;
+}
+
+
+const fetchUnVerifiedTeachers = async () => {
+  try {
+    const cookieStore = cookies()
+    const access_token = cookieStore.get('access_token');
     
-  ];
+    if (!access_token) {
+      return {
+        data: null, status: null
+      }
+    }
+    
+    const res = await backendApi.get('/admin/getUnverifiedTeachers', {
+      headers: {
+        Authorization: `Bearer ${access_token?.value}`
+      }
+    });
+    
+    
+   const data = res.data
+
+    return {status: 200, data}
+    
+  } catch(err:any) {
+    console.log(err?.message)
+    return {
+      status: err?.response?.status || -1,
+      data: null      
+    }
+  }
+}
+
+const Dashboard = async () => {
+  
+  const { data, status } = await fetchUnVerifiedTeachers();
+
+  if (!status || status == 401) redirect('/auth/signin');
+  
+  const unVerifiedTeachers:Teacher[] = data?.unverified_teachers || []
 
   return (
     <div className="bg-google-bw  visible absolute flex h-auto min-h-full w-full opacity-100 contain-style">
@@ -53,9 +65,12 @@ const Dashboard = () => {
             </div>
             <div className="p-10 h-full w-full">
               <div className="flex h-full w-full flex-col items-center">
-                {users.map((user, idx) => (
-                  <UserRow key={idx} {...user} />
+                {unVerifiedTeachers.map((teacher, idx) => (
+                  <UserRow key={idx} {...teacher} />
                 ))}
+                  {unVerifiedTeachers.length === 0 && 
+                  <h1 className="text-xl font-normal">No pending requests!!!</h1>
+                }
               </div>
             </div>
           </div>
@@ -65,4 +80,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default Dashboard

@@ -20,7 +20,7 @@ const SignIn = () => {
     }
 
     const data = {
-      email: signInInfo.email,
+      userName: signInInfo.userName,
       password: signInInfo.password,
     };
 
@@ -28,9 +28,9 @@ const SignIn = () => {
 
     if (status === 201) router.push("/");
     else if (status === -1) alert("unknown problem");
-    else if (status === 400) alert("Email not in correct format");
+    else if (status === 400) alert("Data not in correct format (server issue)");
     else if (status === 500) alert("server error");
-    else if (status === 403) alert("email or password not correct");
+    else if (status === 403) alert("user-name or password not correct");
     else alert("wtf");
 
   };
@@ -44,9 +44,8 @@ const SignIn = () => {
             <div className="flex flex-grow flex-row flex-wrap">
               <Page
                 title="Sign-In As Admin"
-                subtitle="Enter email and password to sign-in"
+                subtitle="Enter user-name and password to sign-in"
                 inputsFilled={isInfoFilled}
-                isSignIn={true}
                 handleSubmit={handleSignIn}
               >
                 <SignInSec />
