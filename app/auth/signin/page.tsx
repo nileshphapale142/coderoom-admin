@@ -46,7 +46,6 @@ const SignIn = () => {
                 title="Sign-In As Admin"
                 subtitle="Enter user-name and password to sign-in"
                 inputsFilled={isInfoFilled}
-                isSignIn={true}
                 handleSubmit={handleSignIn}
               >
                 <SignInSec />
