@@ -1,5 +1,5 @@
 services:
-  prod-server:
+  admin-server:
     image: coderoom-admin:1
     container_name: admin-server
     build:
