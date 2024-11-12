@@ -1,9 +1,6 @@
 'use client';
 
-import { signUpPageNo } from '@/Recoil';
-import { useRecoilState } from 'recoil';
 import { RoundedSmBtn } from '../Buttons';
-import { RoundSmLink } from '../Links';
 
 export const Page = ({
   title,
@@ -11,24 +8,16 @@ export const Page = ({
   children,
   inputsFilled,
   handleSubmit = () => {},
-  isSignIn = false,
 }: {
   title: string;
   subtitle: string;
   children: React.ReactNode;
   inputsFilled: boolean;
   handleSubmit?: () => void;
-  isSignIn?: boolean;
 }) => {
-  const [pageNo, setPageNo] = useRecoilState(signUpPageNo);
 
   const displayMsg = () => {
     if (!inputsFilled) alert('Fill all the fields');
-  };
-
-  const nextPageHandler = () => {
-    if (inputsFilled) setPageNo((prev) => prev + 1);
-    else alert('Fill all the fields');
   };
 
   return (
@@ -55,43 +44,11 @@ export const Page = ({
       {/* //todo: password validation */}
 
       <div className='mt-10 w-full'>
-        {isSignIn ? (
+        {
           <div className='flex flex-row justify-end'>
-            <RoundSmLink
-              name={'Create account'}
-              link='/auth/signup'
-              id='signupLink'
-            />
-
             <RoundedSmBtn name={'Enter'} action={handleSubmit} id='signInBtn' />
           </div>
-        ) : (
-          <div className='flex flex-row justify-between'>
-            {pageNo !== 0 ? (
-              <RoundedSmBtn
-                name={'Back'}
-                action={() => setPageNo((prev) => prev - 1)}
-                id='backBtn'
-              />
-            ) : (
-              <div className='w-1'></div>
-            )}
-
-            {pageNo !== 3 ? (
-              <RoundedSmBtn
-                name={'Next'}
-                action={nextPageHandler}
-                id='nextBtn'
-              />
-            ) : (
-              <RoundedSmBtn
-                name={'Create'}
-                action={handleSubmit}
-                id='createBtn'
-              />
-            )}
-          </div>
-        )}
+        }
       </div>
     </>
   );

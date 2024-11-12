@@ -14,16 +14,16 @@ export const SignInSec = () => {
     <>
       <div className='w-full '>
         <BasicInput
-          title='Email'
-          inputHandler={(email) => {
+          title='Username'
+          inputHandler={(userName) => {
             setInfo((prev) => {
-              return { ...prev, email: email };
+              return { ...prev, userName: userName };
             });
           }}
-          defaultInput={info.email}
+          defaultInput={info.userName}
           width={'100%'}
-          inputType='email'
-          id='email'
+          inputType='string'
+          id='string'
         />
       </div>
 
