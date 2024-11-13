@@ -36,7 +36,7 @@ export const UserRow = ({ name, email, id }: Teacher ) => {
 
   return (
     <div
-      className="font-base text-xl flex w-2/3 flex-wrap flex-row justify-between p-4 border rounded-4 border-gray my-1 cursor-default hover:bg-google-bw transition-all"
+      className="font-base text-xl flex w-[80%] flex-wrap flex-row justify-between p-4 border rounded-4 border-gray my-1 cursor-default hover:bg-google-bw transition-all"
     >
       <div className="py-1 flex justify-start items-center text-center" style={{ flexBasis: "30%" }}>
         {name}
