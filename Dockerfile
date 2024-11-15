@@ -12,10 +12,6 @@ RUN npm install
 
 COPY . .
 
-ENV NODE_ENV production
-
-COPY .env.production .env
-
 ENV PORT 5000
 
 RUN npm run build
